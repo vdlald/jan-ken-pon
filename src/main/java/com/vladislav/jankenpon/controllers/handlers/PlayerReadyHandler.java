@@ -2,8 +2,8 @@ package com.vladislav.jankenpon.controllers.handlers;
 
 import com.vladislav.jankenpon.pojo.GameRoom;
 import com.vladislav.jankenpon.pojo.Player;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,13 @@ public class PlayerReadyHandler {
 
     simpMessagingTemplate.convertAndSend(
         String.format("/topic/%s/player.ready", gameRoom.getId()),
-        Map.of("username", player.getUsername())
+        new Response(player.getUsername())
     );
+  }
+
+  @Value
+  public static class Response {
+
+    String username;
   }
 }

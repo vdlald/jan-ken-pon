@@ -59,6 +59,6 @@ public class FinishGameHandler {
   public static class Response {
 
     String winner;
-    List<String> roundsWinner;
+    List<String> roundsWinners;
   }
 }
