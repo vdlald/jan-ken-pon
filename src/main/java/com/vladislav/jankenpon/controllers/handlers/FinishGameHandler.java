@@ -48,7 +48,7 @@ public class FinishGameHandler {
 
       simpMessagingTemplate.convertAndSend(
           String.format("/topic/%s/game.finish", gameRoom.getId()),
-          new Response(username)
+          new Response(username, roundsWinner)
       );
     } else {
       extraRoundHandler.handle(gameRoom, usernames);
@@ -59,5 +59,6 @@ public class FinishGameHandler {
   public static class Response {
 
     String winner;
+    List<String> roundsWinner;
   }
 }

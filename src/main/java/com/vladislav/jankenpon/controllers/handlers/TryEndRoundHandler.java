@@ -53,7 +53,10 @@ public class TryEndRoundHandler {
 
     simpMessagingTemplate.convertAndSend(
         String.format("/topic/%s/game.round.draw", gameRoom.getId()),
-        Map.of("usernames", List.of(usernames))
+        Map.of(
+            "usernames", List.of(usernames),
+            "playersChoices", transaction.getPlayersChoice()
+        )
     );
   }
 
@@ -104,7 +107,10 @@ public class TryEndRoundHandler {
       // this means that the winners play each other
       simpMessagingTemplate.convertAndSend(
           String.format("/topic/%s/game.round.draw", gameRoom.getId()),
-          Map.of("usernames", winners)
+          Map.of(
+              "usernames", winners,
+              "playersChoices", playersChoices
+          )
       );
     }
   }

@@ -1,6 +1,9 @@
 package com.vladislav.jankenpon.controllers.handlers;
 
+import com.vladislav.jankenpon.pojo.Game;
 import com.vladislav.jankenpon.pojo.GameRoom;
+import com.vladislav.jankenpon.pojo.GameTransaction.Choice;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -14,11 +17,12 @@ public class RoundWinnerHandler {
   private final NextRoundHandler nextRoundHandler;
 
   public void handle(GameRoom gameRoom, String username) {
-    gameRoom.getGame().addRoundWinner(username);
+    final Game game = gameRoom.getGame();
+    game.addRoundWinner(username);
 
     simpMessagingTemplate.convertAndSend(
-        String.format("/topic/%s/game.round.result", gameRoom.getId()),
-        new Response(username)
+        String.format("/topic/%s/game.round.winner", gameRoom.getId()),
+        new Response(username, game.getCurrentTransaction().getPlayersChoice())
     );
 
     nextRoundHandler.handle(gameRoom);
@@ -28,5 +32,7 @@ public class RoundWinnerHandler {
   public static class Response {
 
     String winner;
+    Map<String, Choice> playersChoices;
+
   }
 }
