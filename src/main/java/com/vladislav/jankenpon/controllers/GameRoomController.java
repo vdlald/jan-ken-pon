@@ -81,7 +81,7 @@ public class GameRoomController {
   @MessageMapping("/api/{gameRoomId}/player.choose")
   public void playerChoose(
       MessageHeaders headers,
-      @Payload Map<String, String> request,
+      @Payload PlayerChooseHandler.Request request,
       @DestinationVariable UUID gameRoomId
   ) {
     // auth
@@ -89,9 +89,6 @@ public class GameRoomController {
     final Credits credits = websocketUtils.parseCreditsFromHeaders(headers);
     final Player player = websocketUtils.authorize(gameRoom, credits);
 
-    // handle
-    final Choice choice = Choice.valueOf(request.get("choice"));
-
-    playerChooseHandler.handle(gameRoom, player, choice);
+    playerChooseHandler.handle(gameRoom, player, request);
   }
 }
