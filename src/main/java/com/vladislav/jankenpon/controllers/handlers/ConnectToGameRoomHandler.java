@@ -1,6 +1,5 @@
 package com.vladislav.jankenpon.controllers.handlers;
 
-import com.vladislav.jankenpon.components.GameRoomSerializer;
 import com.vladislav.jankenpon.pojo.GameRoom;
 import com.vladislav.jankenpon.pojo.Player;
 import com.vladislav.jankenpon.utils.Credits;

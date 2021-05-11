@@ -39,6 +39,7 @@ public class PlayerChooseHandler {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class Request {
+
     private Choice choice;
   }
 

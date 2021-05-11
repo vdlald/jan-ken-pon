@@ -15,9 +15,6 @@ public class StartGameHandler {
 
   public void handle(GameRoom gameRoom) {
     final Game game = gameRoom.getGame();
-    if (game.getReadyPlayers().size() != gameRoom.getPlayers().size()) {
-      throw new RuntimeException("not all players are ready");
-    }
 
     game.start();
     simpMessagingTemplate.convertAndSend(

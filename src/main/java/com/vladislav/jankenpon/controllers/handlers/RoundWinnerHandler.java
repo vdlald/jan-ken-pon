@@ -5,7 +5,6 @@ import com.vladislav.jankenpon.pojo.GameRoom;
 import com.vladislav.jankenpon.pojo.GameTransaction.Choice;
 import com.vladislav.jankenpon.utils.Pair;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

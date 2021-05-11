@@ -7,12 +7,10 @@ import com.vladislav.jankenpon.controllers.handlers.PlayerChooseHandler;
 import com.vladislav.jankenpon.controllers.handlers.PlayerReadyHandler;
 import com.vladislav.jankenpon.controllers.handlers.StartGameHandler;
 import com.vladislav.jankenpon.pojo.GameRoom;
-import com.vladislav.jankenpon.pojo.GameTransaction.Choice;
 import com.vladislav.jankenpon.pojo.Player;
 import com.vladislav.jankenpon.utils.Credits;
 import com.vladislav.jankenpon.utils.WebsocketUtils;
 import java.security.Principal;
-import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.MessageHeaders;
@@ -81,6 +79,14 @@ public class GameRoomController {
 
     if (gameRoom.getGame().isStarted()) {
       throw new RuntimeException("Game started");
+    }
+
+    if (gameRoom.getPlayers().size() < 2) {
+      throw new RuntimeException("Not enough players");
+    }
+
+    if (gameRoom.getGame().getReadyPlayers().size() != gameRoom.getPlayers().size()) {
+      throw new RuntimeException("not all players are ready");
     }
 
     startGameHandler.handle(gameRoom);
