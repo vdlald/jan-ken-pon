@@ -1,7 +1,9 @@
 package com.vladislav.jankenpon.controllers.handlers;
 
 import com.vladislav.jankenpon.pojo.GameRoom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class FinishGameHandler {
 
   public void handle(GameRoom gameRoom) {
     // if there are many winners in the game, we must create a new round with winners
-    final List<String> roundsWinner = gameRoom.getGame().getRoundsWinner();
+    final List<String> roundsWinner = gameRoom.getGame().getRoundsWinners();
 
     final Map<String, Integer> usernameToWins = new HashMap<>();
     for (final String username : roundsWinner) {
@@ -34,7 +36,7 @@ public class FinishGameHandler {
 
       final List<String> usernames = winsToUsernames.get(winsCount);
       if (usernames == null) {
-        winsToUsernames.put(winsCount, Arrays.asList(username));
+        winsToUsernames.put(winsCount, new ArrayList<>(Collections.singletonList(username)));
       } else {
         usernames.add(username);
       }
@@ -45,6 +47,8 @@ public class FinishGameHandler {
     final List<String> usernames = winsToUsernames.get(max);
     if (usernames.size() == 1) {
       final String username = usernames.get(0);
+
+      gameRoom.getGame().setFinished(true);
 
       simpMessagingTemplate.convertAndSend(
           String.format("/topic/%s/game.finish", gameRoom.getId()),

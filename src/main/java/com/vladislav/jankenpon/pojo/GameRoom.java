@@ -1,5 +1,6 @@
 package com.vladislav.jankenpon.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class GameRoom {
     players.add(player);
   }
 
+  @JsonIgnore
   public Set<String> getPlayersUsernames() {
     return players.stream()
         .map(Player::getUsername)

@@ -1,10 +1,13 @@
 package com.vladislav.jankenpon.pojo;
 
 import com.vladislav.jankenpon.utils.Pair;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,18 +22,26 @@ public class GameTransaction {
   private int round;
 
   @Setter(AccessLevel.NONE)
-  private Map<String, Choice> playersChoice = new HashMap<>();
+  private Map<String, Choice> playersChoices = new HashMap<>();
   private Set<String> requiredPlayers = new HashSet<>();
 
   public void setPlayerChoice(Player player, Choice choice) {
     if (!requiredPlayers.contains(player.getUsername())) {
       throw new RuntimeException("the player does not play in this transaction");
     }
-    playersChoice.put(player.getUsername(), choice);
+    playersChoices.put(player.getUsername(), choice);
   }
 
   public boolean isTransactionFull() {
-    return playersChoice.keySet().equals(requiredPlayers);
+    return playersChoices.keySet().equals(requiredPlayers);
+  }
+
+  public List<Pair<String, Choice>> getPlayersChoicesList() {
+    final List<Pair<String, Choice>> result = new ArrayList<>(playersChoices.size());
+    for (Entry<String, Choice> entry : playersChoices.entrySet()) {
+      result.add(Pair.from(entry));
+    }
+    return result;
   }
 
   @AllArgsConstructor
@@ -49,7 +60,7 @@ public class GameTransaction {
       }
     }
 
-    private static Map<Choice, Pair<Choice, Choice>> map = new EnumMap<>(Choice.class);
+    private static final Map<Choice, Pair<Choice, Choice>> map = new EnumMap<>(Choice.class);
 
     static {
       // rock stronger than scissors, but weaker than paper

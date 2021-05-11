@@ -1,5 +1,6 @@
 package com.vladislav.jankenpon.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,9 @@ public class Game {
 
   private boolean started;
   private Set<String> readyPlayers = new HashSet<>();
+  private boolean finished;
+
+  @JsonIgnore
   private List<GameTransaction> gameTransactions = new ArrayList<>();
 
   @Setter(AccessLevel.NONE)
@@ -23,7 +27,7 @@ public class Game {
   private int maxRounds;
 
   // index + 1 = round
-  private List<String> roundsWinner = new ArrayList<>();
+  private List<String> roundsWinners = new ArrayList<>();
 
   public void playerReady(Player player) {
     readyPlayers.add(player.getUsername());
@@ -37,6 +41,7 @@ public class Game {
     gameTransactions.add(gameTransaction);
   }
 
+  @JsonIgnore
   public GameTransaction getCurrentTransaction() {
     return gameTransactions.get(gameTransactions.size() - 1);
   }
@@ -46,6 +51,6 @@ public class Game {
   }
 
   public void addRoundWinner(String username) {
-    roundsWinner.add(username);
+    roundsWinners.add(username);
   }
 }

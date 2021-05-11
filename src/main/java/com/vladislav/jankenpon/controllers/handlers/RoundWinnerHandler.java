@@ -3,6 +3,8 @@ package com.vladislav.jankenpon.controllers.handlers;
 import com.vladislav.jankenpon.pojo.Game;
 import com.vladislav.jankenpon.pojo.GameRoom;
 import com.vladislav.jankenpon.pojo.GameTransaction.Choice;
+import com.vladislav.jankenpon.utils.Pair;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -22,7 +24,7 @@ public class RoundWinnerHandler {
 
     simpMessagingTemplate.convertAndSend(
         String.format("/topic/%s/game.round.winner", gameRoom.getId()),
-        new Response(username, game.getCurrentTransaction().getPlayersChoice())
+        new Response(username, game.getCurrentTransaction().getPlayersChoicesList())
     );
 
     nextRoundHandler.handle(gameRoom);
@@ -32,7 +34,7 @@ public class RoundWinnerHandler {
   public static class Response {
 
     String winner;
-    Map<String, Choice> playersChoices;
+    List<Pair<String, Choice>> playersChoices;
 
   }
 }

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jan-Ken-Pon</title>
+    <link rel="stylesheet" href="main.css">
+    <link href="/webjars/bootswatch-cyborg/4.2.1/bootstrap.min.css" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/main.js" async></script>
+</head>
+<body>
+
+<div id="root" class="fluid-container p-2 m-0">
+    <div class="row m-0 mt-1">
+
+        <div class="col-2">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div id="isOnlineText">You offline</div>
+                    </div>
+                    <div class="row">
+                        <label for="gameRoomIdInput">Game Room Id: </label>
+                        <input id="gameRoomIdInput" type="text" class="form-control">
+                    </div>
+                    <div class="row mt-2">
+                        <label for="usernameInput">Username: </label>
+                        <input id="usernameInput" type="text" class="form-control">
+                    </div>
+                    <div class="row mt-2">
+                        <label for="passwordInput">Password: </label>
+                        <input id="passwordInput" type="password" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col col-center">
+                    <div class="row">
+                        <button id="createGameRoomButton" class="btn btn-secondary">
+                            Create Game Room
+                        </button>
+                    </div>
+
+                    <div class="row mt-2">
+                        <button id="connectToGameRoomButton" class="btn btn-secondary">
+                            Connect to Game Room
+                        </button>
+                    </div>
+
+                    <div class="row mt-2">
+                        <button id="startGameButton" class="btn btn-secondary">
+                            Start Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameSpace" class="col ml-2">
+            <div class="row">
+                <div id="round"></div>
+            </div>
+            <div class="row">
+                <div id="log" class="col"></div>
+            </div>
+        </div>
+
+        <div class="col-2 ml-2">
+            <div class="row mt-4">
+                <div id="gameStartedText"></div>
+            </div>
+
+            <div class="row mt-4">
+                <button id="readyButton" class="btn btn-success">ready</button>
+            </div>
+
+            <div class="row mt-4">
+                <div class="btn-group">
+                    <button id="rockButton" class="btn btn-secondary">ROCK</button>
+                    <button id="paperButton" class="btn btn-secondary">PAPER</button>
+                    <button id="scissorsButton" class="btn btn-secondary">SCISSORS</button>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <table class="table table-striped">
+                    <tbody id="playerList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

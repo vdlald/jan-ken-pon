@@ -18,7 +18,6 @@ public class ConnectToGameRoomHandler {
 
   private final WebsocketUtils websocketUtils;
   private final NewPlayerHandler newPlayerHandler;
-  private final GameRoomSerializer gameRoomSerializer;
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   public void handle(GameRoom gameRoom, Principal principal, Credits credits) {
@@ -38,13 +37,13 @@ public class ConnectToGameRoomHandler {
     simpMessagingTemplate.convertAndSendToUser(
         principal.getName(),
         "/queue/reply/gameRoom.connected",
-        new Response(gameRoomSerializer.serialize(gameRoom))
+        new Response(gameRoom)
     );
   }
 
   @Value
   public static class Response {
 
-    String gameRoom;
+    GameRoom gameRoom;
   }
 }

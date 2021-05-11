@@ -1,0 +1,14 @@
+.log-game {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.log-round-result {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+#round {
+  font-weight: bold;
+  font-size: 1.4rem;
+}

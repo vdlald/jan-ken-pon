@@ -31,11 +31,11 @@ public class TryEndRoundHandler {
       return;
     }
 
-    final Map<String, Choice> playersChoice = transaction.getPlayersChoice();
-    final Collection<Choice> choices = playersChoice.values();
+    final Map<String, Choice> playersChoice = transaction.getPlayersChoices();
+    final Set<Choice> choices = new HashSet<>(playersChoice.values());
 
     if (choices.size() == 2) {
-      hasWinner(gameRoom, playersChoice, choices);
+      hasWinner(gameRoom, transaction, choices);
     } else {
       draw(gameRoom, transaction);
     }
@@ -54,18 +54,19 @@ public class TryEndRoundHandler {
     simpMessagingTemplate.convertAndSend(
         String.format("/topic/%s/game.round.draw", gameRoom.getId()),
         Map.of(
-            "usernames", List.of(usernames),
-            "playersChoices", transaction.getPlayersChoice()
+            "usernames", usernames,  // the people between whom the round will go on
+            "playersChoices", transaction.getPlayersChoicesList()
         )
     );
   }
 
   private void hasWinner(
       GameRoom gameRoom,
-      Map<String, Choice> playersChoices,
+      GameTransaction transaction,
       Collection<Choice> choices
   ) {
     final Game game = gameRoom.getGame();
+    final Map<String, Choice> playersChoices = transaction.getPlayersChoices();
 
     // init choicesToPlayers
     final Map<Choice, List<String>> choicesToPlayers = new EnumMap<>(Choice.class);
@@ -99,17 +100,17 @@ public class TryEndRoundHandler {
       roundWinnerHandler.handle(gameRoom, winners.get(0));
     } else {
       // the next round does not start
-      final GameTransaction gameTransaction = new GameTransaction()
+      final GameTransaction newTransaction = new GameTransaction()
           .setRequiredPlayers(new HashSet<>(winners))
           .setRound(game.getRound());
-      game.addTransaction(gameTransaction);
+      game.addTransaction(newTransaction);
 
       // this means that the winners play each other
       simpMessagingTemplate.convertAndSend(
           String.format("/topic/%s/game.round.draw", gameRoom.getId()),
           Map.of(
               "usernames", winners,
-              "playersChoices", playersChoices
+              "playersChoices", transaction.getPlayersChoicesList()
           )
       );
     }

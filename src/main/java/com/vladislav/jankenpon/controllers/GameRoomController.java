@@ -63,6 +63,10 @@ public class GameRoomController {
     final Credits credits = websocketUtils.parseCreditsFromHeaders(headers);
     final Player player = websocketUtils.authorize(gameRoom, credits);
 
+    if (gameRoom.getGame().isStarted()) {
+      throw new RuntimeException("Game started");
+    }
+
     playerReadyHandler.handle(gameRoom, player);
   }
 
@@ -74,6 +78,10 @@ public class GameRoomController {
     final GameRoom gameRoom = gameRoomsHolder.getGameRoom(gameRoomId);
     final Credits credits = websocketUtils.parseCreditsFromHeaders(headers);
     websocketUtils.authorize(gameRoom, credits);
+
+    if (gameRoom.getGame().isStarted()) {
+      throw new RuntimeException("Game started");
+    }
 
     startGameHandler.handle(gameRoom);
   }
@@ -88,6 +96,10 @@ public class GameRoomController {
     final GameRoom gameRoom = gameRoomsHolder.getGameRoom(gameRoomId);
     final Credits credits = websocketUtils.parseCreditsFromHeaders(headers);
     final Player player = websocketUtils.authorize(gameRoom, credits);
+
+    if (gameRoom.getGame().isFinished()) {
+      throw new RuntimeException("Game finished");
+    }
 
     playerChooseHandler.handle(gameRoom, player, request);
   }
